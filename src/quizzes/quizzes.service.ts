@@ -23,21 +23,22 @@ export class QuizzesService {
         updatedAt: new Date(),
       });
       return await this.quizRepository.save(quiz);
-    } catch (error) {
-      throw new InternalServerErrorException(
-        'Failed to create quiz',
-        error.message,
-      );
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new InternalServerErrorException('Failed to create quiz', message);
     }
   }
 
   async findAll(): Promise<Quiz[]> {
     try {
       return await this.quizRepository.find();
-    } catch (error) {
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'Unknown error occurred';
       throw new InternalServerErrorException(
         'Failed to fetch quizzes',
-        error.message,
+        message,
       );
     }
   }
@@ -49,12 +50,11 @@ export class QuizzesService {
         throw new NotFoundException(`Quiz with id ${id} not found`);
       }
       return quiz;
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof NotFoundException) throw error;
-      throw new InternalServerErrorException(
-        'Failed to fetch quiz',
-        error.message,
-      );
+      const message =
+        error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new InternalServerErrorException('Failed to fetch quiz', message);
     }
   }
 
@@ -71,12 +71,11 @@ export class QuizzesService {
       });
 
       return this.quizRepository.save(updateQuiz);
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof NotFoundException) throw error;
-      throw new InternalServerErrorException(
-        'Failed to update quiz',
-        error.message,
-      );
+      const message =
+        error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new InternalServerErrorException('Failed to update quiz', message);
     }
   }
 
@@ -89,12 +88,11 @@ export class QuizzesService {
       await this.quizRepository.remove(quiz);
 
       return quiz;
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof NotFoundException) throw error;
-      throw new InternalServerErrorException(
-        'Failed to remove quiz',
-        error.message,
-      );
+      const message =
+        error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new InternalServerErrorException('Failed to remove quiz', message);
     }
   }
 }

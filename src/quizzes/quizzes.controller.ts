@@ -15,6 +15,11 @@ import { UpdateQuizDto } from './dto/update-quiz.dto';
 export class QuizzesController {
   constructor(private readonly quizzesService: QuizzesService) {}
 
+  @Get()
+  getHello(): string {
+    return 'Backend is running';
+  }
+
   @Post()
   create(@Body() createQuizDto: CreateQuizDto) {
     return this.quizzesService.create(createQuizDto);
